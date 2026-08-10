@@ -8,6 +8,32 @@ workflows:
         script: |
           npm install --legacy-peer-deps
           npx cap sync ios
+      - name: Generate Compliant AppIcon Asset
+        script: |
+          brew install imagemagick
+          ICON_DIR="ios/App/App/Assets.xcassets/AppIcon.appiconset"
+          mkdir -p "$ICON_DIR"
+          
+          # Resize favicon.png to exact 1024x1024 square with no alpha/transparency issues
+          magick convert public/favicon.png -resize 1024x1024! -extent 1024x1024 "$ICON_DIR/AppIcon.png"
+          
+          # Write exact valid Contents.json
+          cat << 'EOF' > "$ICON_DIR/Contents.json"
+          {
+            "images": [
+              {
+                "filename": "AppIcon.png",
+                "idiom": "universal",
+                "platform": "ios",
+                "size": "1024x1024"
+              }
+            ],
+            "info": {
+              "author": "xcode",
+              "version": 1
+            }
+          }
+          EOF
       - name: Build Xcode Archive
         script: |
           cd ios/App
