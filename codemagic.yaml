@@ -13,7 +13,7 @@ workflows:
           cd ios/App
           if [ -d "App.xcworkspace" ]; then
             echo "Building with App.xcworkspace"
-            xcodebuild -workspace App.xcworkspace \
+            xcodebuild clean archive -workspace App.xcworkspace \
                        -scheme App \
                        -configuration Release \
                        -sdk iphoneos \
@@ -22,11 +22,10 @@ workflows:
                        CODE_SIGNING_ALLOWED=NO \
                        CODE_SIGN_IDENTITY="" \
                        EXPANDED_CODE_SIGN_IDENTITY="" \
-                       COMPILER_INDEX_STORE_ENABLE=NO \
-                       archive
+                       COMPILER_INDEX_STORE_ENABLE=NO
           else
             echo "Building with App.xcodeproj"
-            xcodebuild -project App.xcodeproj \
+            xcodebuild clean archive -project App.xcodeproj \
                        -scheme App \
                        -configuration Release \
                        -sdk iphoneos \
@@ -35,8 +34,7 @@ workflows:
                        CODE_SIGNING_ALLOWED=NO \
                        CODE_SIGN_IDENTITY="" \
                        EXPANDED_CODE_SIGN_IDENTITY="" \
-                       COMPILER_INDEX_STORE_ENABLE=NO \
-                       archive
+                       COMPILER_INDEX_STORE_ENABLE=NO
           fi
       - name: Export Unsigned IPA
         script: |
