@@ -15,5 +15,7 @@
 		"scrollEnabled": true,
 		"contentInset": "always"
 	},
-	"packageClassList": []
+	"packageClassList": [
+		"GeolocationPlugin"
+	]
 }

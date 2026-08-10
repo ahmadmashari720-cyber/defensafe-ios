@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
+<dict><key>NSLocationWhenInUseUsageDescription</key>
+	<string>DefenSafe needs access to your location to verify your check-in and check-out status.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>DefenSafe needs access to your location to verify your check-in and check-out status.</string>
   <key>CAPACITOR_DEBUG</key>
 	<string>$(CAPACITOR_DEBUG)</string>
 	<key>CFBundleDevelopmentRegion</key>
