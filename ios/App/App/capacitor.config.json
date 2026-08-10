@@ -12,7 +12,8 @@
 	},
 	"ios": {
 		"allowsLinkPreview": false,
-		"scrollEnabled": true
+		"scrollEnabled": true,
+		"contentInset": "always"
 	},
 	"packageClassList": []
 }

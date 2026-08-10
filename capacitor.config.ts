@@ -14,7 +14,8 @@ const config: CapacitorConfig = {
   },
   ios: {
     allowsLinkPreview: false,
-    scrollEnabled: true
+    scrollEnabled: true,
+    contentInset: 'always'
   }
 };
 
