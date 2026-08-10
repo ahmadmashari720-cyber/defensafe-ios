@@ -4,10 +4,18 @@ workflows:
     max_build_duration: 60
     instance_type: mac_mini_m2
     scripts:
-      - name: Install CocoaPods Dependencies
+      - name: Install Dependencies and Sync Capacitor
         script: |
-          cd ios/App
-          pod install
+          npm install
+          npx cap sync ios
+          PODFILE_PATH=$(find ios -name "Podfile" 2>/dev/null | head -n 1)
+          if [ -n "$PODFILE_PATH" ]; then
+            POD_DIR=$(dirname "$PODFILE_PATH")
+            echo "Found Podfile at $POD_DIR, running pod install..."
+            cd "$POD_DIR" && pod install
+          else
+            echo "No Podfile found (using Swift Package Manager)."
+          fi
       - name: Build Xcode Archive
         script: |
           WORKSPACE_PATH=$(find . -name "*.xcworkspace" | head -n 1)
