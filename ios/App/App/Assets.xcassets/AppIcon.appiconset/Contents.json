@@ -1,22 +1,10 @@
 {
   "images": [
     {
-      "idiom": "iphone",
-      "scale": "2x",
-      "size": "60x60",
-      "filename": "AppIcon-60@2x.png"
-    },
-    {
-      "idiom": "iphone",
-      "scale": "3x",
-      "size": "60x60",
-      "filename": "AppIcon-60@3x.png"
-    },
-    {
-      "idiom": "ios-marketing",
-      "scale": "1x",
-      "size": "1024x1024",
-      "filename": "AppIcon-1024.png"
+      "filename": "AppIcon.png",
+      "idiom": "universal",
+      "platform": "ios",
+      "size": "1024x1024"
     }
   ],
   "info": {
