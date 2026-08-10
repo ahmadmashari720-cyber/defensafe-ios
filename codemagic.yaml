@@ -11,17 +11,33 @@ workflows:
       - name: Build Xcode Archive
         script: |
           cd ios/App
-          xcodebuild -workspace App.xcworkspace \
-                     -scheme App \
-                     -configuration Release \
-                     -sdk iphoneos \
-                     -archivePath $CM_BUILD_DIR/build/DefenSafe.xcarchive \
-                     CODE_SIGNING_REQUIRED=NO \
-                     CODE_SIGNING_ALLOWED=NO \
-                     CODE_SIGN_IDENTITY="" \
-                     EXPANDED_CODE_SIGN_IDENTITY="" \
-                     COMPILER_INDEX_STORE_ENABLE=NO \
-                     archive
+          if [ -d "App.xcworkspace" ]; then
+            echo "Building with App.xcworkspace"
+            xcodebuild -workspace App.xcworkspace \
+                       -scheme App \
+                       -configuration Release \
+                       -sdk iphoneos \
+                       -archivePath $CM_BUILD_DIR/build/DefenSafe.xcarchive \
+                       CODE_SIGNING_REQUIRED=NO \
+                       CODE_SIGNING_ALLOWED=NO \
+                       CODE_SIGN_IDENTITY="" \
+                       EXPANDED_CODE_SIGN_IDENTITY="" \
+                       COMPILER_INDEX_STORE_ENABLE=NO \
+                       archive
+          else
+            echo "Building with App.xcodeproj"
+            xcodebuild -project App.xcodeproj \
+                       -scheme App \
+                       -configuration Release \
+                       -sdk iphoneos \
+                       -archivePath $CM_BUILD_DIR/build/DefenSafe.xcarchive \
+                       CODE_SIGNING_REQUIRED=NO \
+                       CODE_SIGNING_ALLOWED=NO \
+                       CODE_SIGN_IDENTITY="" \
+                       EXPANDED_CODE_SIGN_IDENTITY="" \
+                       COMPILER_INDEX_STORE_ENABLE=NO \
+                       archive
+          fi
       - name: Export Unsigned IPA
         script: |
           cd $CM_BUILD_DIR/build/DefenSafe.xcarchive/Products/Applications
