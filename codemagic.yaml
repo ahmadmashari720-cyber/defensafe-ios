@@ -6,8 +6,19 @@ workflows:
     scripts:
       - name: Build Xcode Archive
         script: |
-          cd ios/App
-          xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -sdk iphoneos -archivePath $CM_BUILD_DIR/build/DefenSafe.xcarchive archive
+          WORKSPACE_PATH=$(find . -name "*.xcworkspace" | head -n 1)
+          PROJECT_PATH=$(find . -name "*.xcodeproj" | head -n 1)
+          
+          if [ -n "$WORKSPACE_PATH" ]; then
+            echo "Building with workspace: $WORKSPACE_PATH"
+            xcodebuild -workspace "$WORKSPACE_PATH" -scheme App -configuration Release -sdk iphoneos -archivePath $CM_BUILD_DIR/build/DefenSafe.xcarchive archive
+          elif [ -n "$PROJECT_PATH" ]; then
+            echo "Building with project: $PROJECT_PATH"
+            xcodebuild -project "$PROJECT_PATH" -scheme App -configuration Release -sdk iphoneos -archivePath $CM_BUILD_DIR/build/DefenSafe.xcarchive archive
+          else
+            echo "Error: Neither .xcworkspace nor .xcodeproj found!"
+            exit 1
+          fi
       - name: Export Unsigned IPA
         script: |
           cd $CM_BUILD_DIR/build/DefenSafe.xcarchive/Products/Applications
