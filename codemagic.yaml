@@ -10,10 +10,8 @@ workflows:
           npx cap sync ios
       - name: Build Xcode Archive
         script: |
-          WORKSPACE_PATH=$(find . -name "*.xcworkspace" | head -n 1)
-          echo "Found workspace at: $WORKSPACE_PATH"
-          
-          xcodebuild -workspace "$WORKSPACE_PATH" \
+          cd ios/App
+          xcodebuild -workspace App.xcworkspace \
                      -scheme App \
                      -configuration Release \
                      -sdk iphoneos \
