@@ -4,16 +4,16 @@ workflows:
     max_build_duration: 60
     instance_type: mac_mini_m2
     scripts:
-      - name: Install Dependencies and Resolve Packages
+      - name: Install Dependencies and Sync Native iOS
         script: |
           npm install
           npx cap sync ios
-          cd ios/App
-          xcodebuild -resolvePackageDependencies -workspace App.xcworkspace -scheme App
       - name: Build Xcode Archive
         script: |
-          cd ios/App
-          xcodebuild -workspace App.xcworkspace \
+          WORKSPACE_PATH=$(find . -name "*.xcworkspace" | head -n 1)
+          echo "Found workspace at: $WORKSPACE_PATH"
+          
+          xcodebuild -workspace "$WORKSPACE_PATH" \
                      -scheme App \
                      -configuration Release \
                      -sdk iphoneos \
