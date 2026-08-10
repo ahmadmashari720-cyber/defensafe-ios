@@ -4,46 +4,24 @@ workflows:
     max_build_duration: 60
     instance_type: mac_mini_m2
     scripts:
-      - name: Install Dependencies and Sync Capacitor
+      - name: Install Dependencies and Resolve Packages
         script: |
           npm install
           npx cap sync ios
-          PODFILE_PATH=$(find ios -name "Podfile" 2>/dev/null | head -n 1)
-          if [ -n "$PODFILE_PATH" ]; then
-            POD_DIR=$(dirname "$PODFILE_PATH")
-            echo "Found Podfile at $POD_DIR, running pod install..."
-            cd "$POD_DIR" && pod install
-          else
-            echo "No Podfile found (using Swift Package Manager)."
-          fi
+          cd ios/App
+          xcodebuild -resolvePackageDependencies -workspace App.xcworkspace -scheme App
       - name: Build Xcode Archive
         script: |
-          WORKSPACE_PATH=$(find . -name "*.xcworkspace" | head -n 1)
-          PROJECT_PATH=$(find . -name "*.xcodeproj" | head -n 1)
-          
-          if [ -n "$WORKSPACE_PATH" ]; then
-            echo "Building with workspace: $WORKSPACE_PATH"
-            xcodebuild -workspace "$WORKSPACE_PATH" \
-                       -scheme App \
-                       -configuration Release \
-                       -sdk iphoneos \
-                       -archivePath $CM_BUILD_DIR/build/DefenSafe.xcarchive \
-                       CODE_SIGN_IDENTITY="" \
-                       CODE_SIGNING_REQUIRED=NO \
-                       CODE_SIGNING_ALLOWED=NO \
-                       archive
-          elif [ -n "$PROJECT_PATH" ]; then
-            echo "Building with project: $PROJECT_PATH"
-            xcodebuild -project "$PROJECT_PATH" \
-                       -scheme App \
-                       -configuration Release \
-                       -sdk iphoneos \
-                       -archivePath $CM_BUILD_DIR/build/DefenSafe.xcarchive \
-                       CODE_SIGN_IDENTITY="" \
-                       CODE_SIGNING_REQUIRED=NO \
-                       CODE_SIGNING_ALLOWED=NO \
-                       archive
-          fi
+          cd ios/App
+          xcodebuild -workspace App.xcworkspace \
+                     -scheme App \
+                     -configuration Release \
+                     -sdk iphoneos \
+                     -archivePath $CM_BUILD_DIR/build/DefenSafe.xcarchive \
+                     CODE_SIGN_IDENTITY="" \
+                     CODE_SIGNING_REQUIRED=NO \
+                     CODE_SIGNING_ALLOWED=NO \
+                     archive
       - name: Export Unsigned IPA
         script: |
           cd $CM_BUILD_DIR/build/DefenSafe.xcarchive/Products/Applications
