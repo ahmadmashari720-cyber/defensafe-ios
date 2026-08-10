@@ -11,18 +11,31 @@ workflows:
           
           if [ -n "$WORKSPACE_PATH" ]; then
             echo "Building with workspace: $WORKSPACE_PATH"
-            xcodebuild -workspace "$WORKSPACE_PATH" -scheme App -configuration Release -sdk iphoneos -archivePath $CM_BUILD_DIR/build/DefenSafe.xcarchive archive
+            xcodebuild -workspace "$WORKSPACE_PATH" \
+                       -scheme App \
+                       -configuration Release \
+                       -sdk iphoneos \
+                       -archivePath $CM_BUILD_DIR/build/DefenSafe.xcarchive \
+                       CODE_SIGN_IDENTITY="" \
+                       CODE_SIGNING_REQUIRED=NO \
+                       CODE_SIGNING_ALLOWED=NO \
+                       archive
           elif [ -n "$PROJECT_PATH" ]; then
             echo "Building with project: $PROJECT_PATH"
-            xcodebuild -project "$PROJECT_PATH" -scheme App -configuration Release -sdk iphoneos -archivePath $CM_BUILD_DIR/build/DefenSafe.xcarchive archive
-          else
-            echo "Error: Neither .xcworkspace nor .xcodeproj found!"
-            exit 1
+            xcodebuild -project "$PROJECT_PATH" \
+                       -scheme App \
+                       -configuration Release \
+                       -sdk iphoneos \
+                       -archivePath $CM_BUILD_DIR/build/DefenSafe.xcarchive \
+                       CODE_SIGN_IDENTITY="" \
+                       CODE_SIGNING_REQUIRED=NO \
+                       CODE_SIGNING_ALLOWED=NO \
+                       archive
           fi
       - name: Export Unsigned IPA
         script: |
           cd $CM_BUILD_DIR/build/DefenSafe.xcarchive/Products/Applications
-          mkdir Payload
+          mkdir -p Payload
           cp -r *.app Payload/
           zip -r $CM_BUILD_DIR/DefenSafe.ipa Payload
     artifacts:
