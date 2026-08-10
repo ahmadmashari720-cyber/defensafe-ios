@@ -1,9 +1,0 @@
-{
-  "appId": "com.defensafe.system",
-  "appName": "DefenSafe",
-  "webDir": "public",
-  "server": {
-    "url": "https://system.defensafe.com/",
-    "cleartext": true
-  }
-}
