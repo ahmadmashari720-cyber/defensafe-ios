@@ -18,9 +18,11 @@ workflows:
                      -configuration Release \
                      -sdk iphoneos \
                      -archivePath $CM_BUILD_DIR/build/DefenSafe.xcarchive \
-                     CODE_SIGN_IDENTITY="" \
                      CODE_SIGNING_REQUIRED=NO \
                      CODE_SIGNING_ALLOWED=NO \
+                     CODE_SIGN_IDENTITY="" \
+                     EXPANDED_CODE_SIGN_IDENTITY="" \
+                     COMPILER_INDEX_STORE_ENABLE=NO \
                      archive
       - name: Export Unsigned IPA
         script: |
